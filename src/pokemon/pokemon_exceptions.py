@@ -1,5 +1,5 @@
-class InvalidPkmnTypeException(Exception):
+class InvalidPkmnTypeError(Exception):
     pass
 
-class InvalidPkmn(Exception):
+class InvalidPkmnError(Exception):
     pass

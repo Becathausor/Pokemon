@@ -1,20 +1,29 @@
 import os
-from .pokemon_exceptions import InvalidPkmnTypeException
+from .pokemon_exceptions import InvalidPkmnTypeError
+# from . import TYPE_PATH
 
 
-type_table_path = os.join("data", "pokemon_type.txt")
-with open(type_table_path, 'r') as file:
+DATA_PATH = "data"
+CSV_PATH = os.path.join(DATA_PATH, "pokemon.csv")
+TYPE_PATH = os.path.join(DATA_PATH, "pokemon_type.txt")
+IMAGES_PATH = os.path.join(DATA_PATH, "images")
+DATASETS_PATH = os.path.join(DATA_PATH, "datasets")
+
+
+with open(TYPE_PATH, 'r') as file:
     lines = file.readlines()
-read_types = set(lines)
+read_types = {line[:-1] for line in lines}
 
 
 class PokemonType:
     types = read_types
     def __init__(self, name) -> None:
-        if name in read_types:
+        if name is None:
+            self.name = "Nan"
+        elif name in read_types:
             self.name = name
         else:
-            raise InvalidPkmnTypeException
+            raise InvalidPkmnTypeError(f"Received a type that hasn't been repertoriated. Received type: {name}")
         pass
 
     def __str__(self) -> str:
@@ -24,6 +33,6 @@ class PokemonType:
         return self.name
 
     def isnull(self) -> bool:
-        return self.name == "None"
+        return self.name == "Nan"
 
     pass
