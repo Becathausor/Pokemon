@@ -1,10 +1,10 @@
 from .dataset import Dataset
+
 # from .. import CSV_PATH, IMAGES_PATH
 
 
 __all__ = [
-    'Dataset',
+    "Dataset",
     "CSV_PATH",
     "IMAGES_PATH",
-
-    ]
+]

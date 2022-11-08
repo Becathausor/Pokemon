@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from pickle import dump, load
+
 # from . import CSV_PATH, IMAGES_PATH
 
 DATA_PATH = "data"
@@ -20,28 +21,25 @@ types = list(zip(table.Type1, table.Type2))
 
 for pokemon_name in names:
     try:
-        image = plt.imread(os.path.join(IMAGES_PATH, pokemon_name + ".png")) 
+        image = plt.imread(os.path.join(IMAGES_PATH, pokemon_name + ".png"))
     except FileNotFoundError:
-        image = plt.imread(os.path.join(IMAGES_PATH, pokemon_name + ".jpg")) 
+        image = plt.imread(os.path.join(IMAGES_PATH, pokemon_name + ".jpg"))
     images.append(image)
 
 
-hash_map = {
-    "id": ids,
-    "name": names,
-    "type": types,
-    "image": images
-}
+hash_map = {"id": ids, "name": names, "type": types, "image": images}
 
 
 class Dataset:
-    def __init__(self, 
-    features: list[str], 
-    labels: list[str]
-    ) -> None:
-        self.features = np.array(list(zip((hash_map[key] for key in features))))
-        self.labels = np.array(list(zip((hash_map[key] for key in labels))))
-        
+    def __init__(self, features: list[str], labels: list[str]) -> None:
+        try:
+            self.features = np.array(list(zip((hash_map[key] for key in features))))
+            self.labels = np.array(
+                list(zip((hash_map[key] for key in labels))), dtype=object
+            )
+        except Exception:
+            print(f"features: {features}")
+            print(f"labels: {labels}")
         self._shape = ()
 
         self.initialize_shape()
@@ -60,11 +58,11 @@ class Dataset:
         return self.shape
 
     def save(self, path: str) -> None:
-        with open(path, 'wb') as file:
+        with open(path, "wb") as file:
             dump(self, file)
 
     @classmethod
     def load(cls, path: str):
-        with open(path, 'r') as file:
-            dataset = load(path)
+        with open(path, "rb") as file:
+            dataset = load(file)
         return dataset

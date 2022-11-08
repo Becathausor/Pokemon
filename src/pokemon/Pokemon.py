@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from .pokemon_type import PokemonType
 from .pokemon_exceptions import InvalidPkmnError
+
 # from . import CSV_PATH, IMAGES_PATH
 
 
@@ -20,7 +21,7 @@ class Pokemon:
     def get(cls, pokedex_id: int):
         """
         Gets the pokemon from its pokedex id.
-        
+
         Args:
             pokedex_id: int
 
@@ -31,14 +32,17 @@ class Pokemon:
         if pokemon_line.isnull().any():
             return cls(pokedex_id, pokemon_line.Name, pokemon_line.Type1)
         else:
-            return cls(pokedex_id, pokemon_line.Name, pokemon_line.Type1, pokemon_line.Type2)
+            return cls(
+                pokedex_id, pokemon_line.Name, pokemon_line.Type1, pokemon_line.Type2
+            )
 
-    def __init__(self,
+    def __init__(
+        self,
         pokedex_id: int,
         name: str,
         type1: PokemonType,
-        type2: PokemonType=None,
-        ):
+        type2: PokemonType = None,
+    ):
 
         if PokemonType(type1).isnull():
             raise InvalidPkmnError("The pokemon has a null type as a type 1.")
@@ -47,8 +51,8 @@ class Pokemon:
         self.name: str = name
         self.type1: str = PokemonType(type1)
         self.type2: str = PokemonType(type2)
-        
-        self.image_path = os.path.join(IMAGES_PATH, f'{name}.png')
+
+        self.image_path = os.path.join(IMAGES_PATH, f"{name}.png")
 
     def __str__(self):
         return f"{self.pokedex_id}: {self.name}\n  type1: {self.type1}\n  type2: {self.type2}"
@@ -59,9 +63,8 @@ class Pokemon:
     def display_intel(self, show_image=False):
         print(self)
         if show_image:
-            if not(os.path.exists(self.image_path)):
+            if not (os.path.exists(self.image_path)):
                 raise InvalidPkmnError
 
             plt.imshow(plt.imread(self.image_path))
             plt.show()
-

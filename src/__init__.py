@@ -11,9 +11,11 @@ __all__ = [
     "argument_correspondance",
     "retrieve_types",
     "visualize_pokemon",
+    "create_datasets",
+    "Dataset",
     # "DATA_PATH",
     # "CSV_PATH",
     # "TYPE_PATH",
     # "IMAGES_PATH",
     # "DATASETS_PATH",
-    ]
+]
