@@ -69,9 +69,14 @@ def split_dataset_arguments(*args):
 
 def create_datasets(*args) -> Dataset:
     """
-    Create a dataset and saves it. Takes string arguments to represent feature arguments, label arguments and the filename of registration.
+    Create a dataset and saves it. Takes one string argument to represent feature arguments, label arguments and the filename of registration.
+
+    Arguments:
+        instructions (str): instructions in the format "feature1 feature2 ... : label1 label2 ... : filename"
+
     """
-    training_arguments, testing_arguments, filename = split_dataset_arguments(*args)
+    # instructions = args
+    training_arguments, testing_arguments, filename = split_dataset_arguments(args)
     dataset = Dataset(training_arguments, testing_arguments)
     dataset.save(os.path.join("data", "datasets", filename))
 
